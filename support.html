@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support - Never Be Late A.I.</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0D0F14;
+            --surface: #1A1D26;
+            --surface-light: #252936;
+            --accent: #6C5CE7;
+            --accent-glow: #A29BFE;
+            --cyan: #00D2FF;
+            --text-primary: #F0F0F5;
+            --text-secondary: #9CA3AF;
+            --text-muted: #5C6370;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            -webkit-font-smoothing: antialiased;
+        }
+        nav {
+            padding: 16px 0;
+            background: rgba(13, 15, 20, 0.95);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .nav-inner {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-glow), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .back-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .back-link:hover { color: var(--text-primary); }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px 80px;
+        }
+        h1 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 17px;
+            margin-bottom: 48px;
+            line-height: 1.6;
+        }
+        h2 {
+            font-size: 22px;
+            font-weight: 600;
+            margin: 48px 0 24px;
+            color: var(--text-primary);
+        }
+        .contact-card {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .contact-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .contact-card p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+        .contact-card a {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--accent), #8B7CF7);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .contact-card a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.4);
+        }
+        .faq-item {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 14px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        .faq-question {
+            padding: 20px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+        }
+        .faq-question:hover { background: rgba(255,255,255,0.02); }
+        .faq-arrow {
+            font-size: 14px;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+        }
+        .faq-item.open .faq-arrow { transform: rotate(180deg); }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .faq-answer-inner {
+            padding: 0 24px 20px;
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+        }
+        .faq-item.open .faq-answer {
+            max-height: 300px;
+        }
+        a { color: var(--cyan); }
+        .manage-sub {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 10px 20px;
+            background: var(--surface-light);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+        .manage-sub:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-inner">
+        <a href="index.html" class="logo">Never Be Late A.I.</a>
+        <a href="index.html" class="back-link">&larr; Back to Home</a>
+    </div>
+</nav>
+
+<div class="content">
+    <h1>Help & Support</h1>
+    <p class="subtitle">Having trouble? Check our FAQ below or reach out directly. We're here to help.</p>
+
+    <div class="contact-card">
+        <h3>Contact Support</h3>
+        <p>Have a question, bug report, or feature request? We'd love to hear from you.</p>
+        <a href="mailto:support@neverbelateai.com">Email Us</a>
+    </div>
+
+    <h2>Frequently Asked Questions</h2>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            How does Never Be Late A.I. calculate my wake time?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                The app combines several factors: the real-time driving time from your current location to your destination (using Apple Maps), current and forecasted weather conditions, your personal "get ready" buffer time, and a safety margin. For Premium users, the AI also factors in your historical commute patterns, like whether you tend to leave late on certain days.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            Why does the app need "Always" location access?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                The app needs background location access to continuously monitor traffic conditions and recalculate your wake time while you sleep. If conditions change at 3 AM (like a highway closure), the app needs to adjust your alarm accordingly. Without "Always" access, the app can only check traffic when you have it open, which defeats the purpose.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            Will the alarm sound if my phone is on silent?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                Yes. The alarm uses a special audio configuration that plays through the speaker even when your phone's silent switch is on. It also works when the app is in the background. For best results, make sure you haven't force-quit the app before going to sleep.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            What's the difference between free and Premium?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                The free version provides basic alarm functionality with traffic-based wake times. Premium adds the AI engine, which learns your personal commute patterns, adjusts for weather, provides plain-English explanations for every alarm change, and proactively compensates for your habits (like consistently leaving late).
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            How do I cancel my subscription?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                You can manage or cancel your subscription in two ways:
+                <br><br>
+                1. In the app: Tap the gear icon > "Manage Subscription"
+                <br>
+                2. On your iPhone: Settings > Apple ID > Subscriptions > Never Be Late A.I.
+                <br><br>
+                Your subscription will remain active until the end of your current billing period.
+                <br><br>
+                <a href="https://apps.apple.com/account/subscriptions" class="manage-sub">Manage Subscription</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            Why does my alarm time keep changing?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                That's the AI at work! Traffic conditions and weather forecasts change constantly. The app recalculates your optimal wake time every few minutes to make sure you always have the most accurate alarm. Check the AI explanation on your alarm card to see exactly why it changed.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            Does the app drain my battery?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                The app is optimized for battery efficiency. It uses significant location changes (not continuous GPS) for background monitoring and only checks traffic at intervals. Overnight battery impact is typically minimal (2-5%), similar to other navigation or weather apps.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            I didn't get charged but I'm seeing Premium features. Is that a bug?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                If you're using TestFlight, subscriptions may use your sandbox Apple ID. In the production App Store release, subscriptions are processed through your real Apple ID. If you believe there's a billing error, please contact Apple Support or email us.
+            </div>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+            How do I request my data be deleted?
+            <span class="faq-arrow">&#9660;</span>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-inner">
+                Email <a href="mailto:support@neverbelateai.com">support@neverbelateai.com</a> with the subject line "Data Deletion Request" and we will delete all data associated with your account within 30 days. You can also simply delete the app to remove all locally stored data.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function toggleFaq(el) {
+        const item = el.parentElement;
+        item.classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>

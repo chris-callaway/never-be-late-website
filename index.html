@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Never Be Late A.I. - Smart Commute Alarms</title>
+    <meta name="description" content="AI-powered wake times that learn your routine. Never miss an appointment again with smart alarms that adapt to traffic, weather, and your habits.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0D0F14;
+            --surface: #1A1D26;
+            --surface-light: #252936;
+            --accent: #6C5CE7;
+            --accent-glow: #A29BFE;
+            --cyan: #00D2FF;
+            --text-primary: #F0F0F5;
+            --text-secondary: #9CA3AF;
+            --text-muted: #5C6370;
+            --gradient-start: #6C5CE7;
+            --gradient-end: #00D2FF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 16px 0;
+            background: rgba(13, 15, 20, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent-glow), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-left: 32px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 24px 80px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--cyan);
+            margin-bottom: 32px;
+        }
+
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 72px);
+            font-weight: 800;
+            line-height: 1.05;
+            margin-bottom: 24px;
+            letter-spacing: -0.03em;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--accent-glow), var(--cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 20px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+            max-width: 560px;
+            margin: 0 auto 40px;
+        }
+
+        .cta-group {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: linear-gradient(135deg, var(--accent), #8B7CF7);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 24px rgba(108, 92, 231, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px rgba(108, 92, 231, 0.5);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 32px;
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--surface-light);
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: var(--surface-light);
+        }
+
+        /* Phone mockup */
+        .phone-mockup {
+            margin: 60px auto 0;
+            max-width: 300px;
+            position: relative;
+        }
+
+        .phone-frame {
+            background: var(--surface);
+            border-radius: 36px;
+            border: 2px solid var(--surface-light);
+            padding: 16px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+        }
+
+        .phone-screen {
+            background: var(--bg);
+            border-radius: 24px;
+            padding: 24px 20px;
+            min-height: 420px;
+        }
+
+        .mock-time {
+            font-size: 56px;
+            font-weight: 300;
+            text-align: center;
+            margin: 20px 0 4px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .mock-period {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .mock-card {
+            background: var(--surface);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+
+        .mock-card-name {
+            font-weight: 600;
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .mock-card-dest {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .mock-card-ai {
+            font-size: 11px;
+            color: var(--cyan);
+            font-weight: 500;
+        }
+
+        /* Section base */
+        section {
+            padding: 120px 24px;
+        }
+
+        .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--cyan);
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        /* Features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 64px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 20px;
+            padding: 36px 28px;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .feature-icon.purple { background: rgba(108, 92, 231, 0.15); }
+        .feature-icon.cyan { background: rgba(0, 210, 255, 0.15); }
+        .feature-icon.green { background: rgba(0, 210, 130, 0.15); }
+        .feature-icon.orange { background: rgba(255, 159, 67, 0.15); }
+        .feature-icon.pink { background: rgba(255, 107, 129, 0.15); }
+        .feature-icon.blue { background: rgba(54, 153, 255, 0.15); }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* How it works */
+        .how-it-works {
+            background: var(--surface);
+            border-top: 1px solid var(--surface-light);
+            border-bottom: 1px solid var(--surface-light);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 48px;
+            margin-top: 64px;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-number {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* AI Section */
+        .ai-section {
+            position: relative;
+        }
+
+        .ai-section::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .ai-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-top: 64px;
+        }
+
+        .ai-example {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 20px;
+            padding: 32px;
+        }
+
+        .ai-example-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--cyan);
+        }
+
+        .ai-message {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            padding-left: 16px;
+            border-left: 2px solid var(--cyan);
+        }
+
+        .ai-benefits li {
+            list-style: none;
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+        .ai-benefits .check {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            background: rgba(0, 210, 255, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--cyan);
+            margin-top: 2px;
+        }
+
+        /* Pricing */
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-top: 64px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .pricing-card {
+            background: var(--surface);
+            border: 1px solid var(--surface-light);
+            border-radius: 20px;
+            padding: 36px 28px;
+            text-align: center;
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(108, 92, 231, 0.2);
+        }
+
+        .pricing-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent), var(--cyan));
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 16px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .pricing-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .pricing-price {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 16px 0 4px;
+        }
+
+        .pricing-price span {
+            font-size: 18px;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+
+        .pricing-detail {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .pricing-features {
+            text-align: left;
+            list-style: none;
+            margin-bottom: 28px;
+        }
+
+        .pricing-features li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features li::before {
+            content: '';
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300D2FF'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E") center/contain no-repeat;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px 24px 40px;
+            border-top: 1px solid var(--surface-light);
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+
+        .footer-brand p {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 8px;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .footer-links h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+        }
+
+        .footer-links a {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            margin-bottom: 10px;
+            transition: color 0.2s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .ai-grid { grid-template-columns: 1fr; gap: 40px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .pricing-cards { grid-template-columns: 1fr; max-width: 400px; }
+            .hero { padding: 100px 24px 60px; }
+            .phone-mockup { max-width: 260px; }
+        }
+
+        /* Smooth scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+    <div class="nav-inner">
+        <div class="logo">Never Be Late A.I.</div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#ai">AI Engine</a>
+            <a href="#pricing">Pricing</a>
+            <a href="support.html">Support</a>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">Powered by AI that learns your routine</div>
+        <h1>Stop setting alarms.<br><span class="gradient">Start arriving on time.</span></h1>
+        <p>Never Be Late A.I. calculates the perfect wake-up time based on real-time traffic, weather, and your personal patterns. It learns. It adapts. You just show up.</p>
+        <div class="cta-group">
+            <a href="#" class="btn-primary">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+                Download on App Store
+            </a>
+        </div>
+
+        <div class="phone-mockup fade-in">
+            <div class="phone-frame">
+                <div class="phone-screen">
+                    <div class="mock-time">6:47</div>
+                    <div class="mock-period">AM</div>
+                    <div class="mock-card">
+                        <div class="mock-card-name">Go to Work</div>
+                        <div class="mock-card-dest">123 Market St, San Francisco</div>
+                        <div class="mock-card-ai">AI: Moved 12 min earlier - I-280 construction + rain expected</div>
+                    </div>
+                    <div class="mock-card">
+                        <div class="mock-card-name">Gym</div>
+                        <div class="mock-card-dest">24 Hour Fitness, Daly City</div>
+                        <div class="mock-card-ai">AI: On schedule - light traffic on usual route</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features -->
+<section id="features">
+    <div class="section-inner">
+        <div class="section-label">Features</div>
+        <div class="section-title">Everything you need to<br>never be late again</div>
+        <div class="section-subtitle">More than just an alarm clock. A personal AI assistant that understands your commute, your habits, and your life.</div>
+
+        <div class="features-grid">
+            <div class="feature-card fade-in">
+                <div class="feature-icon purple">&#x1F9E0;</div>
+                <h3>AI That Learns You</h3>
+                <p>Tracks your departure patterns, lateness history, and daily consistency to proactively adjust your wake time before you even know you need it.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon cyan">&#x1F6E3;</div>
+                <h3>Real-Time Traffic</h3>
+                <p>Continuously monitors traffic conditions on your route and recalculates your wake time as conditions change throughout the night.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon green">&#x26C5;</div>
+                <h3>Weather-Aware</h3>
+                <p>Rain, snow, fog, or ice. Weather impacts your commute, so the AI factors it into your wake time automatically.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon orange">&#x1F4AC;</div>
+                <h3>AI Explains Every Change</h3>
+                <p>No black box. Every time your alarm adjusts, the AI tells you exactly why: "Moved 15 min earlier due to accident on I-95."</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon pink">&#x1F514;</div>
+                <h3>Bulletproof Alarms</h3>
+                <p>Plays through silent mode, works in the background, and uses multiple fallback methods. This alarm will not be ignored.</p>
+            </div>
+            <div class="feature-card fade-in">
+                <div class="feature-icon blue">&#x1F4CD;</div>
+                <h3>Address Autocomplete</h3>
+                <p>Powered by Apple Maps. Just start typing your destination and select from suggestions. No more copy-pasting addresses.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="how-it-works">
+    <div class="section-inner">
+        <div class="section-label">How It Works</div>
+        <div class="section-title">Set it once. The AI handles the rest.</div>
+        <div class="section-subtitle">Three simple inputs. Infinite intelligence behind the scenes.</div>
+
+        <div class="steps">
+            <div class="step fade-in">
+                <div class="step-number">1</div>
+                <h3>Tell It Where</h3>
+                <p>Enter your destination and what time you need to arrive. Add your get-ready time (shower, coffee, etc).</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">2</div>
+                <h3>AI Calculates</h3>
+                <p>The AI analyzes real-time traffic, weather forecasts, and your personal patterns to compute the optimal wake time.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">3</div>
+                <h3>It Adapts Live</h3>
+                <p>While you sleep, the alarm continuously updates. If a highway closes at 3 AM, your alarm moves earlier. You wake up right on time.</p>
+            </div>
+            <div class="step fade-in">
+                <div class="step-number">4</div>
+                <h3>It Learns You</h3>
+                <p>Over time, the AI tracks whether you're consistently late or early and adjusts future alarms to match your actual behavior.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Section -->
+<section id="ai" class="ai-section">
+    <div class="section-inner">
+        <div class="section-label">AI Engine</div>
+        <div class="section-title">Not just traffic alerts.<br>A learning system.</div>
+        <div class="section-subtitle">Other apps tell you about traffic. Never Be Late A.I. learns your habits, predicts delays, and acts before you have to.</div>
+
+        <div class="ai-grid fade-in">
+            <div>
+                <ul class="ai-benefits">
+                    <li>
+                        <span class="check">&#10003;</span>
+                        <span><strong>Pattern Recognition</strong> - Learns that you always leave 10 minutes late on Mondays and compensates automatically</span>
+                    </li>
+                    <li>
+                        <span class="check">&#10003;</span>
+                        <span><strong>Lateness Tracking</strong> - Logs every trip and builds a profile of your actual departure habits vs planned times</span>
+                    </li>
+                    <li>
+                        <span class="check">&#10003;</span>
+                        <span><strong>Proactive Adjustments</strong> - Doesn't wait for you to be late. Shifts your alarm based on predicted behavior</span>
+                    </li>
+                    <li>
+                        <span class="check">&#10003;</span>
+                        <span><strong>Transparent Reasoning</strong> - Every AI decision comes with a plain-English explanation so you stay in control</span>
+                    </li>
+                    <li>
+                        <span class="check">&#10003;</span>
+                        <span><strong>Multi-Factor Intelligence</strong> - Combines traffic, weather, day of week, your history, and buffer time into one smart alarm</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="ai-example">
+                <div class="ai-example-header">
+                    <span style="color: var(--cyan); font-size: 18px;">&#10024;</span>
+                    AI Insight
+                </div>
+                <div class="ai-message">
+                    "I moved your alarm 18 minutes earlier this morning. There's a 40% chance of freezing rain between 6-7 AM which typically adds 12 minutes to your route on I-280. I also noticed you've been running about 6 minutes behind your target departure the last 3 Tuesdays, so I've added extra buffer."
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing -->
+<section id="pricing">
+    <div class="section-inner" style="text-align: center;">
+        <div class="section-label">Pricing</div>
+        <div class="section-title" style="margin-left: auto; margin-right: auto;">Simple, affordable pricing</div>
+        <div class="section-subtitle" style="margin: 0 auto;">AI-powered commute intelligence that pays for itself the first time it saves you from being late.</div>
+
+        <div class="pricing-cards">
+            <div class="pricing-card fade-in">
+                <h3>Monthly</h3>
+                <div class="pricing-price">$2.99<span>/mo</span></div>
+                <div class="pricing-detail">Billed monthly. Cancel anytime.</div>
+                <ul class="pricing-features">
+                    <li>AI-powered wake times</li>
+                    <li>Real-time traffic monitoring</li>
+                    <li>Weather-aware adjustments</li>
+                    <li>Pattern learning</li>
+                    <li>AI explanations for every change</li>
+                    <li>Unlimited alarms</li>
+                </ul>
+                <a href="#" class="btn-secondary" style="width: 100%; justify-content: center;">Get Started</a>
+            </div>
+            <div class="pricing-card featured fade-in">
+                <div class="pricing-badge">Save 44%</div>
+                <h3>Yearly</h3>
+                <div class="pricing-price">$19.99<span>/yr</span></div>
+                <div class="pricing-detail">Just $1.67/month. Best value.</div>
+                <ul class="pricing-features">
+                    <li>Everything in Monthly</li>
+                    <li>AI-powered wake times</li>
+                    <li>Real-time traffic monitoring</li>
+                    <li>Weather-aware adjustments</li>
+                    <li>Pattern learning</li>
+                    <li>Priority support</li>
+                </ul>
+                <a href="#" class="btn-primary" style="width: 100%; justify-content: center;">Get Started</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="logo">Never Be Late A.I.</div>
+            <p>AI-powered smart alarms that learn your routine and get you where you need to be, on time, every time.</p>
+        </div>
+        <div class="footer-links">
+            <h4>Legal</h4>
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+        </div>
+        <div class="footer-links">
+            <h4>Support</h4>
+            <a href="support.html">Help & FAQ</a>
+            <a href="mailto:support@neverbelateai.com">Contact Us</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2025 Never Be Late A.I. All rights reserved. Apple and the Apple logo are trademarks of Apple Inc.
+    </div>
+</footer>
+
+<!-- Scroll animation -->
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
