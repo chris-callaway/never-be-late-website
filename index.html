@@ -243,6 +243,28 @@ footer{border-top:1px solid var(--line);padding:44px 0;background:var(--ink)}
   .btn:hover,.card:hover{transform:none}
 }
 </style>
+  <!-- Meta Pixel: Never Be Late (1414890680776370). Measures which ads bring
+       people here and which of them go on to tap a store button, so the ads can
+       optimise for that instead of for bare clicks. Disclosed in privacy.html. -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1414890680776370');
+  fbq('track','PageView');
+  // A tap on a store button is the closest thing this page has to a conversion:
+  // the install itself happens in the store, where the pixel cannot see it.
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
+    var h=a.getAttribute('href')||'';
+    var store=h.indexOf('apps.apple.com')>-1?'ios':(h.indexOf('play.google.com')>-1?'android':null);
+    if(store)fbq('track','Lead',{content_name:store});
+  },true);
+  </script>
+  <noscript><img height="1" width="1" style="display:none" alt=""
+    src="https://www.facebook.com/tr?id=1414890680776370&ev=PageView&noscript=1"/></noscript>
 </head>
 <body>
 
