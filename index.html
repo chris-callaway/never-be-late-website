@@ -254,13 +254,56 @@ footer{border-top:1px solid var(--line);padding:44px 0;background:var(--ink)}
   document,'script','https://connect.facebook.net/en_US/fbevents.js');
   fbq('init','1414890680776370');
   fbq('track','PageView');
+  // CARRY THE AD'S ATTRIBUTION INTO THE STORE.
+  //
+  // The ads land people here and the pixel sees the visit, but the store
+  // buttons used to hand off a bare URL, so the trail ended at the moment that
+  // actually matters. Every install looked like it came from nowhere, which is
+  // why spend could only be split by reading the campaign's NAME.
+  function attribution(){
+    try{ return new URLSearchParams(location.search); }catch(e){ return null; }
+  }
+  function withAttribution(href,store){
+    var p=attribution();
+    if(!p||!p.get('utm_source'))return href;
+    try{
+      var u=new URL(href,location.href);
+      if(store==='android'){
+        // Play takes ONE opaque `referrer` string and hands it to the app
+        // through the Install Referrer API, so the parameters travel packed
+        // inside it rather than as siblings.
+        var ref=['utm_source','utm_medium','utm_campaign','utm_content','utm_term']
+          .filter(function(k){return p.get(k);})
+          .map(function(k){return k+'='+encodeURIComponent(p.get(k));}).join('&');
+        if(ref)u.searchParams.set('referrer',ref);
+      }else{
+        // Apple's campaign token. Full App Analytics attribution also wants a
+        // provider token (`pt`), which this page does not have, so `ct` is the
+        // honest half: it reaches App Analytics campaign reporting without
+        // pretending to be a complete attribution link.
+        u.searchParams.set('ct',p.get('utm_content')||p.get('utm_campaign')||'meta');
+        u.searchParams.set('mt','8');
+      }
+      return u.toString();
+    }catch(e){ return href; }
+  }
   // A tap on a store button is the closest thing this page has to a conversion:
   // the install itself happens in the store, where the pixel cannot see it.
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;
     var h=a.getAttribute('href')||'';
     var store=h.indexOf('apps.apple.com')>-1?'ios':(h.indexOf('play.google.com')>-1?'android':null);
-    if(store)fbq('track','Lead',{content_name:store});
+    if(!store)return;
+    var tagged=withAttribution(h,store);
+    if(tagged!==h)a.setAttribute('href',tagged);
+    var p=attribution();
+    // Name the creative on the conversion too, so Meta can optimise per ad
+    // rather than per campaign.
+    fbq('track','Lead',{
+      content_name:store,
+      content_category:(p&&p.get('utm_content'))||'organic',
+      source:(p&&p.get('utm_source'))||'organic'
+    });
   },true);
   </script>
   <noscript><img height="1" width="1" style="display:none" alt=""
