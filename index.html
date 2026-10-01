@@ -669,5 +669,26 @@ if ('IntersectionObserver' in window) {
   revealAll();
 }
 </script>
+<script>
+// LEAD WITH THE VISITOR'S OWN STORE. Half the paid traffic is Android, and it
+// used to land on an orange "Download on iPhone" with Play as the grey second
+// option, and a nav button that only went to Apple. On Android the Play button
+// now leads and the Apple one steps back; iPhone and desktop are unchanged.
+// The markup keeps both links, so with no JavaScript nothing is lost.
+(function(){
+  if(!/Android/i.test(navigator.userAgent))return;
+  var PLAY='https://play.google.com/store/apps/details?id=com.callaway.neverbelate';
+  var nav=document.querySelector('.nav-cta');
+  if(nav)nav.setAttribute('href',PLAY);
+  document.querySelectorAll('.cta-row').forEach(function(row){
+    var play=row.querySelector('a[href*="play.google.com"]');
+    var apple=row.querySelector('a[href*="apps.apple.com"]');
+    if(!play||!apple)return;
+    play.className='btn btn-primary';
+    apple.className='btn btn-ghost';
+    row.insertBefore(play,apple);
+  });
+})();
+</script>
 </body>
 </html>
